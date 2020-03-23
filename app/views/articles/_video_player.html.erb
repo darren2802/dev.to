@@ -1,5 +1,7 @@
+<!-- This is the partial that can be used to add a video section to the page with an artice -->
 <div itemscope itemtype="http://schema.org/VideoObject" class="video-player-header">
   <% if meta_tags %>
+  <!-- if these data attributes exist, they will be shown -->
     <meta itemprop="uploadDate" content="<%= article.published_at %>" />
     <meta itemprop="name" content="<%= article.title %>" />
     <meta itemprop="description" content="<%= article.description %>" />
@@ -12,7 +14,7 @@
   <script src="//content.jwplatform.com/libraries/b1zWy2iv.js" async></script>
   <div id="video-player-<%= article.id %>" class="video-player"></div>
 </div>
-
+<!-- this section gets the video -->
 <script type="text/javascript" async>
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -23,7 +25,7 @@
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
-
+<%# This gets the video length %>
   function timeToSeconds(hms) {
     if (hms.length < 3) {
       return hms
@@ -35,7 +37,7 @@
       return hms = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
     }
   }
-
+<%# controls for the video player %>
   var waitingOnJWP<%= article.id %> = setInterval(function () {
     if (typeof jwplayer !== 'undefined') {
       clearInterval(waitingOnJWP<%= article.id %>);

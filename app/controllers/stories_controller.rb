@@ -254,14 +254,6 @@ class StoriesController < ApplicationController
   end
 
   def youtube_videos(tags)
-    # tag = tags.split(",")[0]
-    # videos = GoogleService.youtube_videos(tag)
-    # selected_vids = []
-    # 3.times do
-    #   video = videos.pop
-    #   selected_vids << YoutubeVideo.new(video)
-    # end
-    # selected_vids
     videos = GoogleService.youtube_videos(tags)
     videos.delete_if { |video| video[:id][:videoId].nil? }
     most_relevant = videos[0..2]

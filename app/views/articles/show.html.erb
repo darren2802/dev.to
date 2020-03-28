@@ -221,16 +221,16 @@
       <% end %>
       <%= render "articles/actions" %>
     </article>
-    <div class="suggested_videos_section">
+    <div class="suggested_videos_section" style="display: inline">
       <h3>Suggested Videos</h3>
-      <div class="suggested_video_container">
+      <span class="suggested_video_container">
       <% @youtube_videos.each do |vid| %>
-        <span>
           <%= render "liquids/youtube", id: vid.video_id, width: 288, height: 162 %><br>
+          <div>
           &#128077 <%= vid.like_count %> &#128078 <%= vid.dislike_count %><br>
           Published: <%= vid.published_at.to_date %>
-        </span>
-      </div>
+        </div>
+      </span>
       <% end %>
     </div>
     <%# cache author information with a 100 hour expiry if the article has body markdown and its size is greater than 900 %>

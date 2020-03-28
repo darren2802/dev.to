@@ -269,9 +269,9 @@ class StoriesController < ApplicationController
   end
 
   def videos_recent_relevant(videos, nr_relevant, nr_recent)
-    most_relevant = videos[0..nr_relevant]
+    most_relevant = videos[0..(nr_relevant - 1)]
     sorted = videos.sort_by { |video| video[:snippet][:publishedAt] }
-    most_recent = sorted.reverse[0..nr_recent]
+    most_recent = sorted.reverse[0..(nr_recent - 1)]
     most_relevant.concat(most_recent)
   end
 

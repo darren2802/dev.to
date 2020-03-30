@@ -16,6 +16,8 @@ class StoriesController < ApplicationController
 
   rescue_from ArgumentError, with: :bad_request
 
+  include VideoHelper
+
   def index
     @page = (params[:page] || 1).to_i
     @article_index = true
@@ -251,28 +253,6 @@ class StoriesController < ApplicationController
     not_found if permission_denied?
     @comment = Comment.new(body_markdown: @article&.comment_template)
     @youtube_videos = youtube_videos(@article.cached_tag_list)
-  end
-
-  def youtube_videos(tags)
-    videos = GoogleService.youtube_videos(tags)
-    videos.delete_if { |video| video[:id][:videoId].nil? }
-    videos_abridged = videos_recent_relevant(videos, 3, 3)
-
-    video_ids = videos_abridged.map { |video| video[:id][:videoId] }
-    id_string = video_ids.join(",")
-    video_data = GoogleService.video_data(id_string)
-
-    videos_abridged.map do |video|
-      statistics = video_data.detect { |video_d| video_d[:id] == video[:id][:videoId] }
-      YoutubeVideo.new(video, statistics)
-    end
-  end
-
-  def videos_recent_relevant(videos, nr_relevant, nr_recent)
-    most_relevant = videos[0..(nr_relevant - 1)]
-    sorted = videos.sort_by { |video| video[:snippet][:publishedAt] }
-    most_recent = sorted.reverse[0..(nr_recent - 1)]
-    most_relevant.concat(most_recent)
   end
 
   def permission_denied?
